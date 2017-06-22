@@ -1,0 +1,28 @@
+---
+- name: Update apt cache.
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+    dpkg_options: 'force-confdef,force-confold'
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+
+- name: Install required dependencies.
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ common_pkgs }}"
+
+- name: Install imagemagick
+  apt:
+    name: imagemagick
+    state: latest

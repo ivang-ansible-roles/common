@@ -1,0 +1,15 @@
+---
+- include: "{{ ansible_os_family }}.yml"
+
+- name: Ensure default web group exists
+  group:
+    name: "{{ web_group | default('www-data') }}"
+    state: present
+
+- name: Ensure default web user exists
+  user:
+    comment: "{{ web_user | default('www-data') }}"
+    name: "{{ web_user | default('www-data') }}"
+    group: "{{ web_group | default('www-data') }}"
+    shell: /sbin/nologin
+    home: "{{ web_home | default('/var/www') }}"

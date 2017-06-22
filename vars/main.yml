@@ -1,0 +1,6 @@
+---
+common_pkgs:
+  - curl
+  - git
+  - mc
+  - zsh
