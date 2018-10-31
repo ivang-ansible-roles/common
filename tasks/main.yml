@@ -1,5 +1,27 @@
 ---
-- include: "{{ ansible_os_family }}.yml"
+
+- name: Update apt cache.
+  apt:
+    upgrade: dist
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+    dpkg_options: 'force-confdef,force-confold'
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+
+- name: Install common packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ common_pkgs }}"
 
 - name: Ensure default web group exists
   group:
@@ -11,5 +33,5 @@
     comment: "{{ web_user | default('www-data') }}"
     name: "{{ web_user | default('www-data') }}"
     group: "{{ web_group | default('www-data') }}"
-    shell: /sbin/nologin
+#    shell: /sbin/nologin
     home: "{{ web_home | default('/var/www') }}"

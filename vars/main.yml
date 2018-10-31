@@ -4,3 +4,9 @@ common_pkgs:
   - git
   - mc
   - zsh
+  - ca-certificates
+  - zip
+  - unzip
+  - nano
+  - imagemagick
+  - graphicsmagick
